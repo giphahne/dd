@@ -1,31 +1,35 @@
-import string 
+import string
+from collections import Counter
+
 
 def load_words(word_files=[
         "/usr/share/dict/words",
         "/usr/share/dict/connectives",
         "/usr/share/dict/web2a",
         "/usr/share/dict/web2",
-        ]
-):
+]):
     words = set()
     for word_file in word_files:
         with open(word_file, 'r') as f:
-            words = words.union(set(map(
-                lambda x: x.strip(),
-                f.readlines()
-            )))
-            
+            words = words.union(set(map(lambda x: x.strip(), f.readlines())))
+
     return words
 
 
 def base_score_text(reference_words, text):
     text_words = text.split()
-    return sum(list(map(
-        lambda x: 1 if x.lower().strip(
-            string.punctuation) in reference_words else 0,
-        (t for t in text_words)
-    )))
+    return sum(
+        list(
+            map(lambda x: 1 if x.lower().strip(string.punctuation) in reference_words else 0,
+                (t for t in text_words))))
 
+
+def get_text_freqs(text):
+    counts = dict(Counter(filter(lambda x: x.isalpha(), text.lower()))).items()
+
+    num_chars = sum(x[1] for x in counts)
+    text_freqs = {i[0]: round(i[1] / num_chars, 5) for i in counts}
+    return sorted(text_freqs.items(), key=lambda x: x[1], reverse=True)
 
 
 eng_freqs = {
