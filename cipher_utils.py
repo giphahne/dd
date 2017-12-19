@@ -1,28 +1,34 @@
 import string 
 
-def load_words(word_file="/usr/share/dict/words"):
-    with open(word_file, 'r') as f:
-        return set(map(
-            lambda x: x.strip(),
-            f.readlines()
-        ))
-    
+def load_words(word_files=[
+        "/usr/share/dict/words",
+        "/usr/share/dict/connectives",
+        "/usr/share/dict/web2a",
+        "/usr/share/dict/web2",
+        ]
+):
+    words = set()
+    for word_file in word_files:
+        with open(word_file, 'r') as f:
+            words = words.union(set(map(
+                lambda x: x.strip(),
+                f.readlines()
+            )))
+            
+    return words
+
 
 def base_score_text(reference_words, text):
     text_words = text.split()
     return sum(list(map(
-        lambda x: 1 if x.lower() in reference_words else 0,
+        lambda x: 1 if x.lower().strip(
+            string.punctuation) in reference_words else 0,
         (t for t in text_words)
     )))
 
 
 
-
-
-
-
-
-freqs = {
+eng_freqs = {
     "e": 0.12702,
     "t": 0.09056,
     "a": 0.08167,

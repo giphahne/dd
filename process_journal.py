@@ -67,10 +67,11 @@ if __name__ == "__main__":
                     shifted_fragment
                 ))
                 
-            fragments.sort(reverse=True)
-
-            for f in fragments[:1]:
-                print("{}\tkey: {}\t{}"
-                      .format(f[0], f[1], f[2])
-                )
+            #fragments.sort(reverse=True)
+            caesar_solution = max(fragments)
+            print("{}\tkey: {}\t{}"
+                  .format(caesar_solution[0], 
+                          caesar_solution[1], 
+                          caesar_solution[2])
+            )
 
